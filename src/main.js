@@ -1,7 +1,17 @@
 import Vue from 'vue'
-import App from './App.vue'
+
+import todoHeader from './todoHeader.vue'
+import todoInput from './todoInput.vue'
+import todoList from './todoList.vue'
+import todoCommand from './todoCommand.vue'
+
 
 new Vue({
-  el: '#app',
-  render: h => h(App)
+  el: '#todoApp',
+  components: {
+    'header-comp' : todoHeader,
+    'input-comp' : todoInput,
+    'list-comp' : todoList,
+    'command-comp' : todoCommand,
+  }
 })
