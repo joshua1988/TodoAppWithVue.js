@@ -1,17 +1,48 @@
 <template>
   <div id="listArea">
-    <div id="nothingTodo">
-      등록된 할 일이 없습니다!
-    </div>
-    <div id="todoList">
-      <ul>
-      </ul>
-    </div>
+    <ul id="todoList">
+      <li v-for="todoItem in todoItems">
+        {{todoItem}}
+      </li>
+    </ul>
   </div>
 
 </template>
 
 <script>
+
+var storageKey = "myTodoApp";
+var currentKey = "currentKey";
+
+function showList(items) {
+  var stor = localStorage.getItem(storageKey);
+
+  if ( stor ) {
+    var obj = JSON.parse(stor);
+  
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key) && key !== currentKey) {
+          console.log(key + " -> " + obj[key]);
+          items.push(obj[key]);
+      }
+    }
+  } else {
+    items.push("등록된 할 일이 없습니다.")
+  }
+}
+
+export default {
+  data() {
+    return {
+      todoItems:[]
+    }
+  },
+  created() {
+    showList(this.todoItems);
+  }
+}
+
+
 
 </script>
 

@@ -19,38 +19,22 @@ function getNextKey() {
 
   if ( stor ) {
     var obj = JSON.parse(stor);
-
     var key = obj[currentKey];
-
-
 
     if ( key ) {
       console.log("key : " + key);
-      console.log("key : " + key.split('_')[0]);
-      console.log("key : " + key.split('_')[1]);
-
       var num = key.split('_')[1];
 
-
-      return key.split('_')[0] + (parseInt(num)+1);
+      var retKey = key.split('_')[0] + '_' + (parseInt(num)+1);
+      console.log("retKey : " + retKey);
+      return retKey;
     }
   }
 
   return "todoKey_1";
-
-  /*
-  if ( key ) {
-    var num = key.split('_')[1];
-
-    return key.split['_'][0] + (num+1);
-  } else {
-    return "todoKey_1";
-  }
-  */
 }
 
 function addData(text) {
-
   var key = getNextKey();
   var stor = localStorage.getItem(storageKey);
   var obj = null;
@@ -76,20 +60,16 @@ export default {
   },
   methods: {
     funcAddTodo() {
-
       if ( this.todoText ) {
         //alert(this.todoText);
         addData(this.todoText);
         this.todoText = '';
       } else {
-        alert("입력해주세요!");
+        alert("할 일을 입력해주세요!");
       }
-
     }
   }
 }
-
-
 
 </script>
 
