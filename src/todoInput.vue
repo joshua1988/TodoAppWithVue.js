@@ -1,15 +1,96 @@
 <template>
   <div id="inputArea">
 
-    <input type="text" id="inputTodoText" placeholder="여기에 할 일을 입력해주세요."/>
+    <input type="text" id="inputTodoText" v-model="todoText" placeholder="여기에 할 일을 입력해주세요."/>
 
     <div class="container" style="display:inline-block;float:right;">
-      <button id="addTodoBtn" class="btn-3">등록</button>
+      <button id="addTodoBtn" v-on:click="funcAddTodo()" class="btn-3">등록</button>
     </div>
   </div>
 </template>
 
 <script>
+
+var storageKey = "myTodoApp";
+var currentKey = "currentKey";
+
+function getNextKey() {
+  var stor = localStorage.getItem(storageKey);
+
+  if ( stor ) {
+    var obj = JSON.parse(stor);
+
+    var key = obj[currentKey];
+
+
+
+    if ( key ) {
+      console.log("key : " + key);
+      console.log("key : " + key.split('_')[0]);
+      console.log("key : " + key.split('_')[1]);
+
+      var num = key.split('_')[1];
+
+
+      return key.split('_')[0] + (parseInt(num)+1);
+    }
+  }
+
+  return "todoKey_1";
+
+  /*
+  if ( key ) {
+    var num = key.split('_')[1];
+
+    return key.split['_'][0] + (num+1);
+  } else {
+    return "todoKey_1";
+  }
+  */
+}
+
+function addData(text) {
+
+  var key = getNextKey();
+  var stor = localStorage.getItem(storageKey);
+  var obj = null;
+
+  if ( stor ) {
+    obj = JSON.parse(stor);
+  } else {
+    // data가 없는 경우..
+    obj = {};
+  }
+
+  obj[key] = text;
+  obj[currentKey] = key;
+
+  localStorage.setItem(storageKey, JSON.stringify(obj));
+}
+
+export default {
+  data : function() {
+    return {
+      todoText : ''
+    }
+  },
+  methods: {
+    funcAddTodo() {
+
+      if ( this.todoText ) {
+        //alert(this.todoText);
+        addData(this.todoText);
+        this.todoText = '';
+      } else {
+        alert("입력해주세요!");
+      }
+
+    }
+  }
+}
+
+
+
 </script>
 
 <style>
@@ -23,9 +104,10 @@
   background: #2ecc71;
   width:calc(100% - 80px);
   height:30px;
-  line-height:25px;
+  line-height:30px;
   font-size:15px;
   border:0px;
+  margin-left:3px;
 }
 
 #addTodoBtn {
@@ -35,6 +117,8 @@
 
 .container {
   /*padding: 1px;*/
+  padding-left:3px;
+  padding-right:3px;
 }
 
 /* GENERAL BUTTON STYLING */
@@ -55,7 +139,7 @@ button {
   font-size: 1.6em;
   font-weight: bold;
 /*  margin: 1em auto;*/
-  padding: 4px 15px;
+  padding: 3px 15px;
   position: relative;
   text-transform: uppercase;
 }
